@@ -9,6 +9,7 @@ router.get('/', function(req, res, next) {
         if (err) {
             // sending error because its for learning/debugging
             // real project would only send a general message
+            res.statusMessage = result.status;
             res.status(result.code).json(err);
             return;
         }
@@ -22,10 +23,11 @@ router.get('/:id', function(req, res, next) {
         if (err) {
             // sending error because its for learning/debugging
             // real project would only send a general message
+            res.statusMessage = result.status;
             res.status(result.code).json(err);
             return;
         }
-        res.status(result.code).send(result.data);
+        res.status(200).send(result.data);
     },next)
 });
 

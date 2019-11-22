@@ -22,14 +22,21 @@ window.onload = function() {
                 }
                 titleElem.innerHTML = res.name;
                 headerElem.innerHTML = res.name;
-               /*
+         
                 var html = "";
-                for(i in res)  {
-                    html += "<li class='item' onclick='openShoplist("+res[i].id+")'>"
-                    +res[i].name+"</li>"
+                var total = 0;
+                for(i in res.items)  {
+                    var item = res.items[i];
+                    html += "<li class='item'>"
+                    +item.name+(item.country?" ("+item.country+")":"")+
+                    " : "+item.quantity+" X "+item.price+"€ = "+
+                    (item.price*item.quantity).toFixed(2)+" €"
+                    +"</li>"
+                    total += (item.price*item.quantity);
                 }
-                elem.innerHTML = html;
-                */
+                html +="<li class='item'> Total = "+total.toFixed(2)+"€ </li>"
+                shoplistItems.innerHTML = html;
+               
             },
             error: function(jqXHR, errStr, errThrown) {
                 console.log(errStr);
