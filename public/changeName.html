@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <p>Escolha Shoplist:
+        <select id="shoplists">
+
+        </select>
+    </p>
+    <p>Novo nome: <input type="text" id="name"></p>
+    <input type="button" value="Mudar o nome" onclick="mudarNome()">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        window.onload = function() {
+            loadShoplists();
+        }
+        function loadShoplists() {
+            $.ajax({
+                url: "/api/shoplists",
+                method: "get",
+                success: function (res, status, jqXHR) {
+                    console.log(status);
+                    if (res.err) {
+                        console.log(JSON.stringify(res));
+                        return;
+                    }
+                    var html = "";
+                    for (i in res) {
+                        html += "<option value='" + res[i].id + "'>"
+                            + res[i].name + "</option>"
+                    }
+                    document.getElementById("shoplists").innerHTML = html;
+                },
+                error: function (jqXHR, errStr, errThrown) {
+                    console.log(errStr);
+                }
+            })
+        }
+        function mudarNome() {
+            $.ajax({
+                url: "/api/shoplists/"+
+                document.getElementById("shoplists").value,
+                method: "put",
+                data: {
+                    name: document.getElementById("name").value
+                },
+                success: function (res) {
+                    alert(JSON.stringify(res))
+                    loadShoplists()
+                },
+                error: function (res) {
+                    alert("Erro")
+                }
+
+            })
+        }
+    </script>
+</body>
+
+</html>

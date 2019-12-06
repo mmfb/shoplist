@@ -1,6 +1,22 @@
 var pool = require('./connection').pool;
 
 
+module.exports.updateShoplistName = function(idShoplist,newName,callback) {
+    pool.getConnection(function(err,conn){
+        if (err) {
+            callback(err,{code: 500, status: "Error in the connection to the database"})
+            return;
+        }
+        conn.query("update shoplists set name = ? where id = ?", 
+        [newName,idShoplist],
+        function(err, result) {
+            console.log(result)
+            callback(false, {code: 200, status:"ok", data: result})    
+        })
+    })
+}
+
+
 // TODO: Some repetition here on the error handling... 
 
 module.exports.getShoplistNames = function (callback, next) {
